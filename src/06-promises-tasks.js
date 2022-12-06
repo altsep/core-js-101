@@ -28,8 +28,17 @@
  *      .catch((error) => console.log(error.message)) // 'Error: Wrong parameter is passed!
  *                                                    //  Ask her again.';
  */
-function willYouMarryMe(/* isPositiveAnswer */) {
-  throw new Error('Not implemented');
+function willYouMarryMe(isPositiveAnswer) {
+  return new Promise((resolve, reject) => {
+    if (typeof isPositiveAnswer !== 'boolean') {
+      const err = new Error('Wrong parameter is passed! Ask her again.');
+      reject(err);
+    }
+    const positiveMsg = 'Hooray!!! She said "Yes"!';
+    const negativeMsg = 'Oh no, she said "No".';
+    if (isPositiveAnswer) resolve(positiveMsg);
+    resolve(negativeMsg);
+  });
 }
 
 
@@ -48,8 +57,8 @@ function willYouMarryMe(/* isPositiveAnswer */) {
  *    })
  *
  */
-function processAllPromises(/* array */) {
-  throw new Error('Not implemented');
+function processAllPromises(array) {
+  return Promise.all(array);
 }
 
 /**
@@ -71,8 +80,8 @@ function processAllPromises(/* array */) {
  *    })
  *
  */
-function getFastestPromise(/* array */) {
-  throw new Error('Not implemented');
+function getFastestPromise(array) {
+  return Promise.race(array);
 }
 
 /**
@@ -92,8 +101,25 @@ function getFastestPromise(/* array */) {
  *    });
  *
  */
-function chainPromises(/* array, action */) {
-  throw new Error('Not implemented');
+async function chainPromises(array, action) {
+  const resultedValues = [];
+
+  // Move the iteration to a separate method to avoid ts linter warning
+  async function addValues() {
+    array.forEach(async (v) => {
+      try {
+        resultedValues.push(await v);
+      } catch (e) {
+        // Skip a rejected item
+        // Print a default message instead of the entire error stack
+        // console.log(`Promise at index ${i} was rejected`);
+      }
+    });
+  }
+
+  await addValues();
+
+  return resultedValues.reduce(action);
 }
 
 module.exports = {
