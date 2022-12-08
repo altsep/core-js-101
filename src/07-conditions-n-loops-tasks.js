@@ -287,13 +287,12 @@ function reverseInteger(num) {
 const numToArrOfDigits = (n) => n.toString().split('').map(Number);
 
 function isCreditCardNumber(ccn) {
-  const arr = numToArrOfDigits(ccn);
+  const arr = numToArrOfDigits(ccn).reverse();
   const sumArr = [];
   let current;
-  let count = 0;
 
-  for (let i = arr.length - 1; i >= 0; i -= 1) { // Start from the rightmost digit.
-    if (count % 2 !== 0) { // If count is odd, double the value
+  for (let i = 0; i <= arr.length - 1; i += 1) { // Start from the rightmost digit
+    if (i % 2 !== 0) { // If i is odd, double the value
       current = arr[i] * 2;
       if (current > 9) { // Sum the digits of the resulting value in each position
         current = numToArrOfDigits(current).reduce((a, b) => a + b);
@@ -302,7 +301,6 @@ function isCreditCardNumber(ccn) {
       current = arr[i];
     }
     sumArr.push(current);
-    count += 1;
   }
 
   const totalSum = sumArr.reduce((a, b) => a + b);
