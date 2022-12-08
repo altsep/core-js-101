@@ -65,12 +65,11 @@ function getPowerFunction(exponent) {
 function getPolynom(...args) {
   return (x) => {
     let sum = 0;
-    let exponent = args.length - 1;
-    for (let i = 0; i <= args.length - 1; i += 1) {
-      const coef = args[i] * x ** exponent;
-      sum += coef;
-      exponent -= 1;
-    }
+    args.forEach((coef, i, arr) => {
+      const exponent = arr.length - (i + 1);
+      const expression = coef * x ** exponent;
+      sum += expression;
+    });
     return sum;
   };
 }

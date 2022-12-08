@@ -289,19 +289,19 @@ const numToArrOfDigits = (n) => n.toString().split('').map(Number);
 function isCreditCardNumber(ccn) {
   const arr = numToArrOfDigits(ccn).reverse(); // Start from the rightmost digit
   const sumArr = [];
-  let current;
 
-  for (let i = 0; i <= arr.length - 1; i += 1) {
+  arr.forEach((d, i) => {
+    let cur;
     if (i % 2 !== 0) { // If i is odd, double the value
-      current = arr[i] * 2;
-      if (current > 9) { // Sum the digits of the resulting value in each position
-        current = numToArrOfDigits(current).reduce((a, b) => a + b);
+      cur = d * 2;
+      if (cur > 9) { // Sum the digits of the resulting value in each position
+        cur = numToArrOfDigits(cur).reduce((a, b) => a + b);
       }
     } else { // Otherwise use the original value
-      current = arr[i];
+      cur = d;
     }
-    sumArr.push(current);
-  }
+    sumArr.push(cur);
+  });
 
   const totalSum = sumArr.reduce((a, b) => a + b);
   // The number is valid if modulo 10 of the sum of the current digits is equal to 0
