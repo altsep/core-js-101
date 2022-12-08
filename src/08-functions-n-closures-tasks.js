@@ -87,9 +87,8 @@ function memoize(func) {
     if (store[x]) {
       return store[x];
     }
-    const res = func(x);
-    store[x] = res;
-    return res;
+    store[x] = func(x);
+    return store[x];
   };
 }
 
@@ -111,17 +110,15 @@ function memoize(func) {
  */
 function retry(func, attempts) {
   return () => {
-    let count = attempts;
-    let res;
-    while (count > 0 && !res) {
+    for (let i = attempts; i > 0; i -= 1) {
       try {
-        const temp = func();
-        res = temp;
+        return func();
       } catch (e) {
-        count -= 1;
+        // Print the default message
+        // console.log(`Function ${func.name} produced an error. Retrying...`);
       }
     }
-    return res;
+    return undefined;
   };
 }
 
@@ -202,8 +199,13 @@ function partialUsingArguments(fn, ...args1) {
  *   getId4() => 7
  *   getId10() => 11
  */
-function getIdGeneratorFunction(/* startFrom */) {
-  throw new Error('Not implemented');
+function getIdGeneratorFunction(startFrom) {
+  let count = startFrom;
+  return () => {
+    const res = count;
+    count += 1;
+    return res;
+  };
 }
 
 

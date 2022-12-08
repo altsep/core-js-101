@@ -284,27 +284,29 @@ function reverseInteger(num) {
  *   5436468789016589 => false
  *   4916123456789012 => false
  */
+const numToArrOfDigits = (n) => n.toString().split('').map(Number);
+
 function isCreditCardNumber(ccn) {
-  const arr = ccn.toString().split('').map(Number);
+  const arr = numToArrOfDigits(ccn);
   const sumArr = [];
   let current;
   let count = 0;
 
-  for (let i = arr.length - 1; i >= 0; i -= 1) {
-    if (count % 2 !== 0) { // If count is odd, process the value
+  for (let i = arr.length - 1; i >= 0; i -= 1) { // Start from the rightmost digit.
+    if (count % 2 !== 0) { // If count is odd, double the value
       current = arr[i] * 2;
-      if (current > 9) {
-        current -= 9;
+      if (current > 9) { // Sum the digits of the resulting value in each position
+        current = numToArrOfDigits(current).reduce((a, b) => a + b);
       }
-    } else {
+    } else { // Otherwise use the original value
       current = arr[i];
     }
     sumArr.push(current);
     count += 1;
   }
 
-  const totalSum = sumArr.reduce((acc, cur) => acc + cur);
-
+  const totalSum = sumArr.reduce((a, b) => a + b);
+  // The number is valid if modulo 10 of the sum of the current digits is equal to 0
   return totalSum % 10 === 0;
 }
 
@@ -324,12 +326,11 @@ function isCreditCardNumber(ccn) {
  *   165536 (1+6+5+5+3+6 = 26,  2+6 = 8) => 8
  */
 function getDigitalRoot(num) {
-  const toNumArr = (n) => n.toString().split('').map(Number);
-  let arr = toNumArr(num);
+  let arr = numToArrOfDigits(num);
   let r;
   while (arr.length > 1) {
     r = arr.reduce((a, b) => a + b);
-    arr = toNumArr(r);
+    arr = numToArrOfDigits(r);
   }
   return r;
 }
@@ -460,16 +461,24 @@ function getCommonDirectoryPath(pathes) {
  *
  */
 function getMatrixProduct(m1, m2) {
+  const m1Rows = m1.length;
+  const m2Cols = m2[0].length;
+  const m1Cols = m1[0].length;
+
   const res = Array(m1.length).fill().map(() => []);
-  for (let i = 0; i < m1.length; i += 1) {
-    for (let j = 0; j < m2[0].length; j += 1) {
-      let sum = 0;
-      for (let k = 0; k < m1[0].length; k += 1) {
-        sum += m1[i][k] * m2[k][j];
+
+  for (let i = 0; i < m1Rows; i += 1) {
+    for (let j = 0; j < m2Cols; j += 1) {
+      const temp = [];
+      for (let k = 0; k < m1Cols; k += 1) {
+        const mul = m1[i][k] * m2[k][j];
+        temp.push(mul);
       }
-      res[i].push(sum);
+      const product = temp.reduce((a, b) => a + b);
+      res[i].push(product);
     }
   }
+
   return res;
 }
 

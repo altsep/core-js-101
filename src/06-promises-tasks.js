@@ -104,7 +104,7 @@ function getFastestPromise(array) {
 async function chainPromises(array, action) {
   const resultedValues = [];
 
-  // Move the iteration to a separate method to avoid ts linter warning
+  // Move iteration to a separate method to avoid ts linter warning
   async function addValues() {
     array.forEach(async (v) => {
       try {
