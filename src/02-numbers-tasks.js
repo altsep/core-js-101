@@ -212,6 +212,9 @@ function isPrime(n) {
   if (n < 2) return false;
   const q = Math.sqrt(n);
   for (let j = 2; j <= q; j += 1) {
+    // According to the trial division method
+    // a given integer n is prime if it's not divisible by any n from 2 to its square root
+    // cf. https://en.wikipedia.org/wiki/Prime_number#Trial_division
     if (n % j === 0) {
       return false;
     }

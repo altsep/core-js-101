@@ -287,11 +287,11 @@ function reverseInteger(num) {
 const numToArrOfDigits = (n) => n.toString().split('').map(Number);
 
 function isCreditCardNumber(ccn) {
-  const arr = numToArrOfDigits(ccn).reverse();
+  const arr = numToArrOfDigits(ccn).reverse(); // Start from the rightmost digit
   const sumArr = [];
   let current;
 
-  for (let i = 0; i <= arr.length - 1; i += 1) { // Start from the rightmost digit
+  for (let i = 0; i <= arr.length - 1; i += 1) {
     if (i % 2 !== 0) { // If i is odd, double the value
       current = arr[i] * 2;
       if (current > 9) { // Sum the digits of the resulting value in each position
@@ -523,6 +523,7 @@ function evaluateTicTacToePosition(position, cols = 3) {
   const diag = [];
   const backDiag = [];
   const vertical = [];
+  const horizontal = position;
 
   for (let i = 0; i < cols; i += 1) {
     vertical[i] = position.map((row) => row[i]);
@@ -539,7 +540,8 @@ function evaluateTicTacToePosition(position, cols = 3) {
     }
   }
 
-  const matches = [...position, ...vertical, diag, backDiag];
+
+  const matches = [...horizontal, ...vertical, diag, backDiag];
 
   let res;
 
