@@ -459,21 +459,24 @@ function getCommonDirectoryPath(pathes) {
  *
  */
 function getMatrixProduct(m1, m2) {
-  const m1Rows = m1.length;
-  const m2Cols = m2[0].length;
-  const m1Cols = m1[0].length;
+  const m1Rows = m1.length; // n - Ai
+  const m1Columns = m1[0].length; // m - Ak
+  const m2Columns = m2[0].length; // p - Bj
 
-  const res = Array(m1.length).fill().map(() => []);
+  // Implement matrix multiplication applying iterative algorithm with a nested loop
+  // See https://en.wikipedia.org/wiki/Matrix_multiplication_algorithm#Iterative_algorithm
 
-  for (let i = 0; i < m1Rows; i += 1) {
-    for (let j = 0; j < m2Cols; j += 1) {
-      const temp = [];
-      for (let k = 0; k < m1Cols; k += 1) {
+  const res = Array(m1Rows).fill().map(() => []); // Let C be a new matrix of the appropriate size
+
+  // Loop over the indices i from 1 through n (m1Rows) and j from 1 through p (m2Columns)
+  for (let i = 0; i < m1Rows; i += 1) { // For i from 1 to n
+    for (let j = 0; j < m2Columns; j += 1) { // For j from 1 to p
+      let sum = 0;
+      for (let k = 0; k < m1Columns; k += 1) { // For k from 1 to m
         const mul = m1[i][k] * m2[k][j];
-        temp.push(mul);
+        sum += mul; // Set sum ← sum + Aik × Bkj
       }
-      const product = temp.reduce((a, b) => a + b);
-      res[i].push(product);
+      res[i][j] = sum; // Set Cij ← sum
     }
   }
 
